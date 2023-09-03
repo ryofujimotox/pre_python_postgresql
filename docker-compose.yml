@@ -6,9 +6,20 @@ services:
     ports: 
       - "5432:5432"
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=testdb1
+      - POSTGRES_USER=postgres_name
+      - POSTGRES_PASSWORD=postgres_pw
+  pgadmin4:
+    image: dpage/pgadmin4
+    ports:
+        - 8888:80
+    volumes:
+        - pgadmin4_data:/var/lib/pgadmin
+    environment:
+        PGADMIN_DEFAULT_EMAIL: contact@ryo1999.com
+        PGADMIN_DEFAULT_PASSWORD: password
+    depends_on:
+      - db
   web:
     build: .
     command: python3 manage.py runserver 0.0.0.0:8000
@@ -18,3 +29,6 @@ services:
       - "8000:8000"
     depends_on:
       - db
+
+volumes:
+    pgadmin4_data:
